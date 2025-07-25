@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 # -----------------------------------------------
-# 🎯 Student Performance Predictor
+# Student Performance Predictor
 # Goal: Predict if a student will pass based on exam scores and background info
 # -----------------------------------------------
 
@@ -19,19 +19,19 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 df = pd.read_csv(r"C:\Users\saraye tel\OneDrive\Desktop\ARCH_Roadmap\Phase_1\StudentsPerformance.csv")
 
 # -----------------------------------------------
-# 📊 Data Exploration (optional)
+# Data Exploration (optional)
 # -----------------------------------------------
 # print(df.head())
 # print(df.info())
 # print(df.isnull().sum())
 
 # -----------------------------------------------
-# 🏷️ Define Pass/Fail Label BEFORE Normalizing
+# Define Pass/Fail Label BEFORE Normalizing
 # -----------------------------------------------
 df["Result"] = df["math score"].apply(lambda x: "Pass" if x >= 50 else "Fail")
 
 # -----------------------------------------------
-# 🔁 Categorical Encoding
+# Categorical Encoding
 # -----------------------------------------------
 df = pd.get_dummies(df, columns=[
     "gender", "race/ethnicity", "parental level of education",
@@ -39,13 +39,13 @@ df = pd.get_dummies(df, columns=[
 ], drop_first=True)
 
 # -----------------------------------------------
-# ⚖️ Normalize Scores AFTER Creating the Label
+# Normalize Scores AFTER Creating the Label
 # -----------------------------------------------
 numerical = ["math score", "reading score", "writing score"]
 df[numerical] = (df[numerical] - df[numerical].mean()) / df[numerical].std()
 
 # -----------------------------------------------
-# 📂 Split Features & Labels
+# Split Features & Labels
 # -----------------------------------------------
 X = df.drop("Result", axis=1).values
 y = df["Result"].values
@@ -55,7 +55,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 # -----------------------------------------------
-# 🤖 Model Training
+# Model Training
 # -----------------------------------------------
 models = {
     "KNN": KNeighborsClassifier(n_neighbors=5),
@@ -67,7 +67,7 @@ models = {
 accuracy_scores = {}
 
 # -----------------------------------------------
-# 📈 Evaluation Loop
+# Evaluation Loop
 # -----------------------------------------------
 for name, model in models.items():
     model.fit(X_train, y_train)
@@ -76,12 +76,12 @@ for name, model in models.items():
     cm = confusion_matrix(y_test, predictions)
     accuracy_scores[name] = acc
 
-    print(f"\n📌 Model: {name}")
-    print(f"✅ Accuracy: {acc:.2f}")
-    print("📊 Classification Report:")
+    print(f"\n Model: {name}")
+    print(f"Accuracy: {acc:.2f}")
+    print("Classification Report:")
     print(classification_report(y_test, predictions))
 
-    # 🔷 Confusion Matrix Plot
+    # Confusion Matrix Plot
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                 xticklabels=["Fail", "Pass"],
@@ -93,7 +93,7 @@ for name, model in models.items():
     plt.show()
 
 # -----------------------------------------------
-# 📊 Accuracy Comparison Chart
+# Accuracy Comparison Chart
 # -----------------------------------------------
 plt.figure(figsize=(8, 5))
 sns.barplot(x=list(accuracy_scores.keys()), y=list(accuracy_scores.values()), palette="viridis")
